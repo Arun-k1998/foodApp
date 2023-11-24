@@ -1,10 +1,6 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+export const IMG_CDN_URL = 'https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/'
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
-
-
-const restaurantList = [
+export const RestaurantList = [
     {
       type: "restaurant",
       data: {
@@ -735,63 +731,3 @@ const restaurantList = [
       subtype: "basic",
     },
   ];
-  
-  const Title =() =>{
-    return (
-      <a className="logo" href="/">
-        <img src="https://cdn5.vectorstock.com/i/1000x1000/74/94/hot-meal-cup-steamy-bowl-food-court-logo-vector-5397494.jpg" />
-      </a>
-    )
-  }
-  
-  const Header = () =>{
-    return (
-      <div className="navBar">
-        <Title />
-        <div className="nav-list">
-          <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>contact</li>
-            <li>cart</li>
-          </ul>
-        </div>
-      </div>
-    )
-  }
-  
-  const RestaurentCard =({name,cloudinaryImageId,cuisines,avgRating})=>{
-    return(
-      <div className="card">
-        <img src={ "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+cloudinaryImageId} />
-        <h2>{name}</h2>
-        <h3>{cuisines.join(', ')}</h3>
-        <h4>{avgRating}</h4>
-      </div>
-    )
-  }
-  
-  const Body =()=>{
-    return (
-      <div className="cards">
-        {
-          restaurantList.map((restorant)=>(
-            <RestaurentCard {...restorant.data} />
-          ))
-        }
-        
-      </div>
-    )
-  }
-  
-  const AppLayout = () =>{
-  
-    return (
-      <div>
-        <Header />
-        <Body />
-        {/* <Footer /> */}
-      </div>
-    )
-  }
-  root.render(<AppLayout />);
