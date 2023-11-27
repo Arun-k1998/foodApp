@@ -1,20 +1,38 @@
-import { useState } from "react";
-import { RestaurantList } from "../constants";
+import { useEffect, useState } from "react";
+import { RestaurantList,SWIGGY_URL } from "../constants";
 import RestaurentCard from "./RestaurentCard";
+import Shimmer from "./Shimmer";
 
 const Body = () => {
-  const [restorentList, setRestorentList] = useState(RestaurantList);
+  const [allRestorentList, setAllRestorentList] = useState([]);
+  const [filtredRestorentList,setFilteredRestorentList] = useState([])
   const [searchText, setSearchText] = useState("");
+  
   const handleSearch = (e) => {
     setSearchText(e.target.value);
   };
 
   const searchSubmit = ()=>{
-    const list = RestaurantList.filter((restorent)=> restorent.data.name.includes(searchText))
-    setRestorentList(list)
+    const list = allRestorentList.filter((restorent)=> restorent.info.name.toLowerCase().includes(searchText.toLowerCase()))
+    setFilteredRestorentList(list)
+  }
+  useEffect(()=>{
+    getRestaurents()
+  },[])
+
+
+  async function getRestaurents(){
+    const data = await fetch(SWIGGY_URL)
+    // console.log(await data.blob());
+    const json = await data.json()
+    setAllRestorentList(json.data.cards[2].card.card.gridElements.infoWithStyle.restaurants)
+    setFilteredRestorentList(json.data.cards[2].card.card.gridElements.infoWithStyle.restaurants)
+  
   }
 
-  return (
+
+
+  return (allRestorentList.length ==0) ?<Shimmer /> :(
     <div className="cards">
       <div className="search-container">
         <div className="search-bar">
@@ -41,12 +59,12 @@ const Body = () => {
         </button>
       </div>
       <div className="restaurent-cards">
-        {restorentList.map((restorant) => (
-          <RestaurentCard {...restorant.data} />
+        {filtredRestorentList.map((restorant) => (
+          <RestaurentCard {...restorant.info} />
         ))}
       </div>
     </div>
-  );
-};
+  )} 
+;
 
 export default Body;
