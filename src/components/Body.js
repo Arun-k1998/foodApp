@@ -1,36 +1,19 @@
 import { useEffect, useState } from "react";
-import { RestaurantList,SWIGGY_URL } from "../constants";
+import { IMG_CDN_URL, RestaurantList,SWIGGY_URL } from "../constants";
 import RestaurentCard from "./RestaurentCard";
 import Shimmer from "./Shimmer";
+import {Link} from 'react-router-dom'
+import { searchSubmit } from "../utils/helper";
+import useRestorentList from '../utils/useRestorentList'
 
 const Body = () => {
-  const [allRestorentList, setAllRestorentList] = useState([]);
-  const [filtredRestorentList,setFilteredRestorentList] = useState([])
-  const [searchText, setSearchText] = useState("");
   
+  const [searchText, setSearchText] = useState("");
+  const [allRestorentList,filtredRestorentList,setFilteredRestorentList] = useRestorentList()
+
   const handleSearch = (e) => {
     setSearchText(e.target.value);
   };
-
-  const searchSubmit = ()=>{
-    const list = allRestorentList.filter((restorent)=> restorent.info.name.toLowerCase().includes(searchText.toLowerCase()))
-    setFilteredRestorentList(list)
-  }
-  useEffect(()=>{
-    getRestaurents()
-  },[])
-
-
-  async function getRestaurents(){
-    const data = await fetch(SWIGGY_URL)
-    // console.log(await data.blob());
-    const json = await data.json()
-    setAllRestorentList(json.data.cards[2].card.card.gridElements.infoWithStyle.restaurants)
-    setFilteredRestorentList(json.data.cards[2].card.card.gridElements.infoWithStyle.restaurants)
-  
-  }
-
-
 
   return (allRestorentList.length ==0) ?<Shimmer /> :(
     <div className="cards">
@@ -45,7 +28,10 @@ const Body = () => {
           />
         </div>
 
-        <button className="search-button" onClick={searchSubmit}>
+        <button className="search-button" onClick={()=>{
+         const data = searchSubmit(searchText,allRestorentList) 
+         setFilteredRestorentList([...data])
+        }}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -60,7 +46,9 @@ const Body = () => {
       </div>
       <div className="restaurent-cards">
         {filtredRestorentList.map((restorant) => (
+          <Link to={ '/restorent/'+restorant?.info?.id}>
           <RestaurentCard {...restorant.info} />
+          </Link>
         ))}
       </div>
     </div>

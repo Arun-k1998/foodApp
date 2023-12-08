@@ -28,8 +28,11 @@ body {
   width: 100%;
   border-radius: 50%;
 }
-.nav-list ul li {
+.nav-list ul a {
   padding: 10px;
+  text-decoration: none;
+  color:black;
+  
 }
 
 .cards {
@@ -40,9 +43,14 @@ body {
   margin: 20px;
   gap: 20px;
 }
+.cards a{
+  text-decoration: none;
+  color: black;
+}
 
 .card {
   width: 200px;
+  height: 280px;
   border: 1px solid black;
   padding: 10px;
   border-radius: 10px;
@@ -101,4 +109,19 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.restorent_details_container{
+  
+  display: flex;
+  justify-content: start;
+  margin: 40px 60px;
+}
+
+.restorent_details_left img{
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px rgba(0, 0 , 0 ,0.5);
+}
+.restorent_details_right{
+  padding: 40px;
 }
